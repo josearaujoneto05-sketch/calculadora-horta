@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Cultivo Richard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-[#f8f9fa] font-sans p-4 pb-12">
+
+    <div class="max-w-md mx-auto space-y-4">
+        <!-- CARD DE ENTRADA -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-[#3e7d44] p-4 flex items-center gap-2">
+                <span class="text-white text-xl">📋</span>
+                <h1 class="text-white font-bold text-lg">Cultivo Coentro   RICHARD</h1>
+            </div>
+
+            <div class="p-5 space-y-4">
+                <!-- Filas -->
+                <div>
+                    <label class="block text-[13px] font-bold text-[#3e7d44] mb-1">🌱 Quantas filas plantou?</label>
+                    <div class="flex items-center border rounded-lg bg-[#f1f5f1] px-3 py-2">
+                        <input type="number" id="filas" class="bg-transparent w-full outline-none text-gray-700 font-bold" value="">
+                        <span class="text-gray-400 text-xs border-l border-gray-300 pl-2 ml-2">filas</span>
+                    </div>
+                </div>
+
+                <!-- Semente -->
+                <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                    <label class="block text-[12px] font-bold text-[#3e7d44] mb-1 uppercase">Preço do Pacote de Coentro</label>
+                    <input type="number" id="precoSemente" class="w-full border rounded-lg bg-white px-3 py-2 outline-none mb-2" value="">
+                    
+                    <label class="block text-[12px] text-gray-700 mb-1">Quantos pacotes usou?</label>
+                    <select id="qtdSemente" class="w-full border rounded-lg bg-white px-2 py-2 text-sm outline-none">
+                        <option value="0.5">Meio pacote</option>
+                        <option value="1" selected>1 pacote</option>
+                        <option value="1.5">1,5 pacote</option>
+                        <option value="2">2 pacotes</option>
+                    </select>
+                </div>
+
+                <!-- Adubo Orgânico -->
+                <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                    <label class="block text-[12px] font-bold text-[#3e7d44] mb-1 uppercase">Preço da Saca: Adubo Orgânico</label>
+                    <input type="number" id="precoAdubo" class="w-full border rounded-lg bg-white px-3 py-2 outline-none mb-2" value="">
+                    
+                    <label class="block text-[12px] text-gray-700 mb-1">Quantas sacas Gastou Adubo para preparar a leira?</label>
+                    <select id="qtdAduboLeira" class="w-full border rounded-lg bg-white px-2 py-2 text-sm outline-none">
+                        <option value="0">0 saca</option>
+                        <option value="0.5">Meia saca</option>
+                        <option value="1" selected>1 saca</option>
+                        <option value="1.5">1,5 saca</option>
+                        <option value="2">2 sacas</option>
+                    </select>
+                </div>
+
+                <!-- Calcário e NPK -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-[#3e7d44] mb-1">Calcário (R$ 1,00 o KG)</label>
+                        <input type="number" id="qtdCalcario" class="w-full border rounded-lg bg-[#f1f5f1] px-3 py-2 outline-none" value="">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-[#3e7d44] mb-1">Preço do Quilo 'KG' do NPK</label>
+                        <input type="number" id="precoNpk" class="w-full border rounded-lg bg-[#f1f5f1] px-3 py-2 outline-none" value="">
+                    </div>
+                </div>
+
+                <!-- Mão de Obra -->
+                <div class="grid grid-cols-2 gap-3 border-t pt-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-[#3e7d44] mb-1 leading-tight">Horas no prepara (da leira até o plantio)</label>
+                        <input type="number" id="horasPreparo" class="w-full border rounded-lg bg-[#f1f5f1] px-3 py-2 outline-none" value="">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-[#3e7d44] mb-1">Valor Diária (8h)</label>
+                        <input type="number" id="diaria" class="w-full border rounded-lg bg-[#f1f5f1] px-3 py-2 outline-none" value="">
+                    </div>
+                </div>
+
+                <button onclick="calcular()" class="w-full bg-[#b8e064] hover:bg-[#a8cf54] text-[#1b4332] font-black py-4 rounded-xl shadow-lg mt-4 transition-all active:scale-[0.98] uppercase">
+                    Calcular Custo Real
+                </button>
+            </div>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div id="resultado-container" class="hidden space-y-3">
+            <!-- Container dos Resultados um embaixo do outro -->
+            <div class="flex flex-col gap-3">
+                
+                <!-- Card 30 Dias -->
+                <div class="bg-white border-l-4 border-blue-500 rounded-lg p-4 shadow-sm">
+                    <p class="text-gray-700 text-[18px] font-medium">Custo da Fila (com 30 dias)</p>
+                    <h2 id="custo-30" class="text-blue-600 text-3xl font-bold">R$ 0,00</h2>
+                </div>
+
+                <!-- Card 40 Dias -->
+                <div class="bg-white border-l-4 border-orange-500 rounded-lg p-4 shadow-sm">
+                    <p class="text-gray-700 text-[18px] font-medium">Custo da Fila (com 40 dias)</p>
+                    <h2 id="custo-40" class="text-orange-600 text-3xl font-bold">R$ 0,00</h2>
+                </div>
+                <!-- Card INFO -->
+                <div class="bg-white border-l-4 border-orange-500 rounded-lg p-4 shadow-sm">
+                    <p class="text-gray-700 text-[18px] font-medium">Calculos aos 15 dias de Plantio: adubação, mão de obra</p>
+                    <h2 id="infoExtra" class="text-orange-600 text-3xl font-bold">Adicionado automaticamente</h2>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-5 border border-gray-100 text-[11px]">
+                <p class="font-bold text-[#1b4332] mb-3 uppercase">🔍 Memória de Cálculo (10 filas teram 8 boas)</p>
+                <div id="debug-log" class="font-mono text-black-700 space-y-1 bg-green-50 p-3 rounded border border-green-100"></div>
+            </div>
+        </div>
+    </div>
+       
+    <script>
+        let chartInstance = null;
+        const BASE_FILAS = 120;
+
+        function calcular() {
+            // Pegar Inputs
+            const filas = parseFloat(document.getElementById('filas').value) || 1;
+            const precoSemente = parseFloat(document.getElementById('precoSemente').value) || 0;
+            const qtdSemente = parseFloat(document.getElementById('qtdSemente').value) || 0;
+            const precoAdubo = parseFloat(document.getElementById('precoAdubo').value) || 0;
+            const qtdAduboLeira = parseFloat(document.getElementById('qtdAduboLeira').value) || 0;
+            const qtdCalcario = parseFloat(document.getElementById('qtdCalcario').value) || 0;
+            const precoNpk = parseFloat(document.getElementById('precoNpk').value) || 0;
+            const horasPreparo = parseFloat(document.getElementById('horasPreparo').value) || 0;
+            const diaria = parseFloat(document.getElementById('diaria').value) || 0;
+
+            const valorHora = diaria / 8;
+            const fatorEscala = filas / BASE_FILAS;
+
+            // 1. CÁLCULO DE INSUMOS
+            // 1. CÁLCULO DE INSUMOS (Regras Corrigidas)
+
+            // Semente: Custo direto do que foi usado, sem fator de escala.
+            const totalSemente = precoSemente * qtdSemente;
+
+            // Adubo: Duas frentes. O inicial é fixo (o que gastou na leira). 
+            // O extra é proporcional ao que sobraria/gastaria a mais para cada 120 filas.
+            const aduboInicial = precoAdubo * qtdAduboLeira;
+            const aduboExtra = (precoAdubo / BASE_FILAS) * filas; 
+            const totalAdubo = aduboInicial + aduboExtra;
+
+            // Calcário: Insumo fixo de preparo, não sofre fator de escala.
+            const totalCalcario = qtdCalcario * 1.00; 
+
+            // NPK: Valor do KG dividido pela base para achar o custo por fila, depois multiplicado pelo plantio real.
+            const totalNpk = (precoNpk / BASE_FILAS) * filas;
+
+            const somaInsumos = totalSemente + totalAdubo + totalCalcario + totalNpk;
+            // 2. MÃO DE OBRA FIXA (Preparo + Capina aos 15 dias)
+            const custoPreparo = horasPreparo * valorHora;
+            const custoCapina = (3 * valorHora) * fatorEscala; // Proporção 3h/120 filas
+
+            // 3. MANUTENÇÃO (Rega: 10 min/dia)
+            const custoRegaDia = (10 / 60) * valorHora;
+            const rega30 = custoRegaDia * 30;
+            const rega40 = custoRegaDia * 40;
+
+            // 4. TOTAIS
+            const total30 = somaInsumos + custoPreparo + custoCapina + rega30;
+            const total40 = somaInsumos + custoPreparo + custoCapina + rega40;
+
+            // 5. EXIBIÇÃO
+            const filasRestante = filas * 0.8;
+            document.getElementById('custo-30').innerText = `R$ ${(total30 / filasRestante).toFixed(2).replace('.', ',')}`;
+            document.getElementById('custo-40').innerText = `R$ ${(total40 / filasRestante).toFixed(2).replace('.', ',')}`;
+            
+
+            const log = [
+                `Com 20% de Perda de produtividade teram: ${filasRestante} filas Boas`,
+                `NPK Fixo: R$ ${totalNpk.toFixed(2)}`,
+                `Fator Escala: ${fatorEscala.toFixed(2)}x (Ref: ${filas}/${BASE_FILAS})`,
+                `Semente (${qtdSemente} pac): R$ ${totalSemente.toFixed(2)}`,
+                `Adubo (${qtdAduboLeira} saca): R$ ${totalAdubo.toFixed(2)}`,
+                `Calcário (${qtdCalcario} kg): R$ ${totalCalcario.toFixed(2)}`,
+                `NPK Fixo: R$ ${totalNpk.toFixed(2)}`,
+                `Mão de obra inicial: R$ ${custoPreparo.toFixed(2)}`,
+                `Capina (15 dias): R$ ${custoCapina.toFixed(2)}`,
+                `Diferença Rega (10d): R$ ${(rega40 - rega30).toFixed(2)}`
+            ];
+            document.getElementById('debug-log').innerHTML = log.map(l => `<div>• ${l}</div>`).join('');
+            document.getElementById('resultado-container').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
