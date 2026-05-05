@@ -118,7 +118,7 @@
        
     <script>
         let chartInstance = null;
-        const BASE_FILAS = 120;
+        const BASE_FILAS = 150;
 
         function calcular() {
             // Pegar Inputs
@@ -159,7 +159,7 @@
             const custoCapina = (3 * valorHora) * fatorEscala; // Proporção 3h/120 filas
 
             // 3. MANUTENÇÃO (Rega: 10 min/dia)
-            const custoRegaDia = (10 / 60) * valorHora;
+            const custoRegaDia = (5 / 60) * valorHora;
             const rega30 = custoRegaDia * 30;
             const rega40 = custoRegaDia * 40;
 
@@ -182,7 +182,7 @@
                 `Calcário (${qtdCalcario} kg): R$ ${totalCalcario.toFixed(2)}`,
                 `NPK Fixo: R$ ${totalNpk.toFixed(2)}`,
                 `Mão de obra inicial: R$ ${custoPreparo.toFixed(2)}`,
-                `Capina (15 dias): R$ ${custoCapina.toFixed(2)}`,
+                `Mão de Capina (15 dias): R$ ${custoCapina.toFixed(2)}`,
                 `Diferença Rega (10d): R$ ${(rega40 - rega30).toFixed(2)}`
             ];
             document.getElementById('debug-log').innerHTML = log.map(l => `<div>• ${l}</div>`).join('');
